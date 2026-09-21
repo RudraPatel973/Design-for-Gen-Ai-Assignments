@@ -1,0 +1,49 @@
+:root { --ink: #20102d; --pink: #ff87ca; --yellow: #f5ff65; --purple: #6336df; }
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--ink); background: #fff9ee; font-family: Arial, Helvetica, sans-serif; }
+button, a { -webkit-tap-highlight-color: transparent; }
+.masthead { min-height: 82px; padding: 20px 4%; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 3px solid var(--ink); }
+.brand { color: inherit; text-decoration: none; font-size: 15px; font-weight: 900; letter-spacing: -.5px; display: flex; gap: 10px; align-items: center; }
+.brand > span { font-size: 36px; line-height: 1; }
+.edition, .issue, footer, .tiny-note, .bottom-note, .side-note { font-family: 'Courier New', monospace; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
+.issue { border: 1.5px solid var(--ink); border-radius: 30px; padding: 10px 15px; }
+.stage { background: var(--purple); min-height: min(790px, 85svh); position: relative; overflow: hidden; isolation: isolate; padding: 65px 20px 80px; display: grid; place-items: center; }
+.grid { position: absolute; inset: 0; z-index: -1; background-image: linear-gradient(#ffffff0c 1px, transparent 1px), linear-gradient(90deg, #ffffff0c 1px, transparent 1px); background-size: 64px 64px; }
+.centerpiece { text-align: center; position: relative; z-index: 2; }
+.eyebrow { color: white; font: 700 10px 'Courier New', monospace; letter-spacing: 2px; margin: 0 0 27px; }
+.eyebrow > span { display: inline-block; width: 7px; height: 7px; background: var(--yellow); border-radius: 50%; margin-right: 8px; }
+h1 { margin: 0; font-family: Impact, 'Arial Black', Arial, sans-serif; font-weight: 1000; font-size: clamp(80px, 13.3vw, 185px); line-height: .85; letter-spacing: -.065em; }
+.word { display: block; white-space: nowrap; }
+.word-0 { color: var(--pink); transform: rotate(-5deg); position: relative; z-index: 1; }
+.word-1 { color: var(--yellow); transform: rotate(2deg); margin-top: 13px; }
+.letter { display: inline-block; -webkit-text-stroke: 2px var(--ink); text-shadow: 5px 6px 0 var(--ink); animation: hello-pop 850ms cubic-bezier(.2,.8,.25,1.15) both; animation-delay: var(--delay); }
+.intro { color: #fff9ee; font-size: 16px; line-height: 1.5; margin: 32px 0 22px; }
+.replay { background: #fff9ee; border: 2px solid var(--ink); color: var(--ink); border-radius: 0; padding: 15px 22px; box-shadow: 5px 5px 0 var(--ink); display: inline-flex; align-items: center; gap: 18px; font-size: 11px; font-weight: 900; letter-spacing: 1px; cursor: pointer; transition: transform 160ms, box-shadow 160ms; }
+.replay span { font-size: 20px; line-height: 1; }
+.replay:hover { transform: translate(-2px, -2px) rotate(-2deg); box-shadow: 7px 7px 0 var(--ink); background: var(--yellow); }
+.replay:active { transform: translate(4px, 4px); box-shadow: 1px 1px 0 var(--ink); }
+:focus-visible { outline: 3px dashed var(--yellow); outline-offset: 7px; }
+.brand:focus-visible { outline-color: var(--purple); }
+.tiny-note { position: absolute; top: 35px; left: 4%; color: #eee1ff; line-height: 1.5; }
+.sticker { position: absolute; top: 12%; right: 7%; background: #ff8d42; border: 2px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); padding: 21px 17px; font-size: 22px; font-weight: 1000; line-height: .95; transform: rotate(12deg); }
+.spark { position: absolute; line-height: 1; -webkit-text-stroke: 2px var(--ink); }
+.spark-one { color: var(--yellow); left: 9%; top: 30%; font-size: 130px; transform: rotate(15deg); }
+.spark-two { color: var(--pink); right: 10%; bottom: 20%; font-size: 100px; }
+.smiley { position: absolute; left: 13%; bottom: 16%; height: 95px; width: 95px; border-radius: 50%; border: 3px solid var(--ink); background: #ff9bcf; box-shadow: 5px 5px 0 var(--ink); transform: rotate(-15deg); text-align: center; }
+.smiley span { display: block; font-size: 62px; font-weight: 900; line-height: .65; letter-spacing: 7px; padding-left: 7px; }
+.smiley i { display: block; width: 44px; height: 25px; border-bottom: 4px solid var(--ink); border-radius: 0 0 50% 50%; margin: 9px auto 0; }
+.orbit { position: absolute; width: 140px; height: 55px; border: 2px solid #ffb7de; transform: rotate(-35deg); right: 4%; top: 47%; border-radius: 50%; }
+.orbit span { position: absolute; font-size: 55px; color: var(--pink); top: -10px; left: 44px; }
+.side-note { position: absolute; right: 20px; top: 37%; writing-mode: vertical-rl; color: #eee1ff; }
+.bottom-note { position: absolute; bottom: 26px; left: 4%; color: #eee1ff; }
+.handwritten { position: absolute; bottom: 33px; right: 7%; font-family: Georgia, serif; font-style: italic; font-size: 25px; color: var(--yellow); transform: rotate(-9deg); }
+.ticker { overflow: hidden; background: var(--yellow); border-block: 3px solid var(--ink); padding: 15px 0; }
+.ticker > div { white-space: nowrap; width: max-content; font-size: 23px; font-weight: 900; letter-spacing: -1px; }
+.ticker b { display: inline-block; padding: 0 22px; }
+footer { display: flex; justify-content: space-between; gap: 18px; padding: 24px 4%; font-size: 10px; }
+.heart { color: #c62674; font-size: 16px; }
+@keyframes hello-pop { 0% { opacity: 0; transform: translateY(90px) rotate(-18deg) scale(.35); } 65% { opacity: 1; transform: translateY(-14px) rotate(var(--tilt)) scale(1.06); } 100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); } }
+@media (min-width: 1500px) { .stage { min-height: 790px; } }
+@media (max-width: 850px) { .edition { display: none; } .spark-one { left: 2%; font-size: 85px; top: 25%; } .sticker { right: 4%; top: 8%; font-size: 17px; padding: 16px; } .smiley { left: 5%; bottom: 12%; width: 75px; height: 75px; } .smiley span { font-size: 48px; } .smiley i { width: 35px; height: 20px; margin-top: 6px; } .spark-two { right: 4%; bottom: 18%; font-size: 70px; } .orbit { display: none; } .stage { min-height: 700px; } }
+@media (max-width: 540px) { .masthead { min-height: 70px; padding: 16px 5%; } .brand { font-size: 12px; } .brand > span { font-size: 28px; } .issue { font-size: 9px; padding: 8px 10px; } .stage { min-height: 690px; padding: 145px 12px 125px; } h1 { font-size: clamp(65px, 16.2vw, 88px); } .letter { -webkit-text-stroke-width: 1.5px; text-shadow: 3px 4px 0 var(--ink); } .eyebrow { font-size: 8px; letter-spacing: 1px; margin-bottom: 24px; } .intro { font-size: 14px; margin-top: 26px; } .tiny-note { font-size: 9px; top: 23px; } .sticker { top: 9%; font-size: 16px; right: 9%; } .spark-one { top: 12%; left: 10%; font-size: 74px; } .spark-two { bottom: 13%; right: 10%; font-size: 60px; } .smiley { bottom: 12%; left: 9%; height: 65px; width: 65px; } .smiley span { font-size: 42px; } .smiley i { width: 29px; height: 16px; } .side-note { display: none; } .bottom-note { bottom: 20px; font-size: 8px; } .handwritten { bottom: 43px; font-size: 20px; } .ticker > div { font-size: 19px; } footer { flex-direction: column; align-items: center; font-size: 8px; padding: 20px; gap: 10px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
