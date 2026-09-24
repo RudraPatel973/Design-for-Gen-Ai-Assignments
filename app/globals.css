@@ -47,3 +47,35 @@ footer { display: flex; justify-content: space-between; gap: 18px; padding: 24px
 @media (max-width: 850px) { .edition { display: none; } .spark-one { left: 2%; font-size: 85px; top: 25%; } .sticker { right: 4%; top: 8%; font-size: 17px; padding: 16px; } .smiley { left: 5%; bottom: 12%; width: 75px; height: 75px; } .smiley span { font-size: 48px; } .smiley i { width: 35px; height: 20px; margin-top: 6px; } .spark-two { right: 4%; bottom: 18%; font-size: 70px; } .orbit { display: none; } .stage { min-height: 700px; } }
 @media (max-width: 540px) { .masthead { min-height: 70px; padding: 16px 5%; } .brand { font-size: 12px; } .brand > span { font-size: 28px; } .issue { font-size: 9px; padding: 8px 10px; } .stage { min-height: 690px; padding: 145px 12px 125px; } h1 { font-size: clamp(65px, 16.2vw, 88px); } .letter { -webkit-text-stroke-width: 1.5px; text-shadow: 3px 4px 0 var(--ink); } .eyebrow { font-size: 8px; letter-spacing: 1px; margin-bottom: 24px; } .intro { font-size: 14px; margin-top: 26px; } .tiny-note { font-size: 9px; top: 23px; } .sticker { top: 9%; font-size: 16px; right: 9%; } .spark-one { top: 12%; left: 10%; font-size: 74px; } .spark-two { bottom: 13%; right: 10%; font-size: 60px; } .smiley { bottom: 12%; left: 9%; height: 65px; width: 65px; } .smiley span { font-size: 42px; } .smiley i { width: 29px; height: 16px; } .side-note { display: none; } .bottom-note { bottom: 20px; font-size: 8px; } .handwritten { bottom: 43px; font-size: 20px; } .ticker > div { font-size: 19px; } footer { flex-direction: column; align-items: center; font-size: 8px; padding: 20px; gap: 10px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* The database-backed Hello Board shares the original page's colors and typography. */
+.board-home { color: var(--ink); text-decoration: none; white-space: nowrap; }
+.board-home:hover { background: var(--pink); }
+.board { background: var(--purple); background-image: linear-gradient(#ffffff0c 1px, transparent 1px), linear-gradient(90deg, #ffffff0c 1px, transparent 1px); background-size: 64px 64px; padding: 64px max(5%, calc((100% - 1180px) / 2)) 40px; min-height: 80svh; }
+.board-heading { position: relative; margin-bottom: 45px; }
+.board-heading .eyebrow { margin-bottom: 20px; }
+.board-heading h1 { color: var(--pink); font-size: clamp(76px, 11vw, 150px); -webkit-text-stroke: 2px var(--ink); text-shadow: 5px 6px 0 var(--ink); line-height: .95; }
+.board-heading h1 > span { color: var(--yellow); }
+.board-heading h1 > span > span { display: inline-block; font-size: .65em; margin-left: 20px; transform: rotate(12deg); }
+.board-intro { color: #fff9ee; font-size: 17px; line-height: 1.6; margin: 24px 0 0; }
+.board-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; color: #fff9ee; padding-bottom: 18px; margin-bottom: 28px; border-bottom: 2px solid #ffffff65; font: 700 12px 'Courier New', monospace; letter-spacing: 1px; }
+.board-refresh { border: 2px solid var(--ink); padding: 10px 16px; color: var(--ink); background: var(--yellow); font: inherit; cursor: pointer; }
+.board-refresh:hover { background: var(--pink); }
+.greeting-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; }
+.greeting-card { min-width: 0; background: var(--pink); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); padding: 24px; position: relative; overflow-wrap: anywhere; }
+.greeting-card:nth-child(3n + 2) { background: var(--yellow); }
+.greeting-card:nth-child(3n) { background: #ffa768; }
+.card-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font: 700 12px 'Courier New', monospace; text-transform: uppercase; }
+.card-top > span:first-child { border: 1.5px solid var(--ink); border-radius: 50%; padding: 7px; }
+.greeting-card h2 { margin: 28px 0 16px; font-size: clamp(25px, 3.2vw, 43px); letter-spacing: -1px; line-height: 1.2; }
+.greeting-card p { font-size: 15px; line-height: 1.6; margin: 0; max-width: 30ch; }
+.card-star { display: block; font-size: 36px; text-align: right; margin-top: 20px; }
+.board-message { background: #fff9ee; border: 3px solid var(--ink); box-shadow: 7px 7px 0 var(--ink); padding: 36px; max-width: 740px; }
+.board-message > span { font-size: 42px; }
+.board-message h2 { font-size: clamp(24px, 4vw, 36px); margin: 18px 0; }
+.board-message p { line-height: 1.6; }
+.board-signoff { text-align: right; color: var(--yellow); font: italic 24px Georgia, serif; margin: 40px 0 0; }
+.board-loading { color: #fff9ee; }
+.board-loading h2 { font-size: clamp(32px, 7vw, 76px); color: var(--yellow); }
+@media (max-width: 850px) { .greeting-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 540px) { .board { padding: 42px 6% 30px; } .greeting-list { grid-template-columns: 1fr; gap: 22px; } .board-heading h1 { font-size: clamp(66px, 18vw, 96px); } .board-toolbar { font-size: 10px; gap: 8px; } .board-refresh { padding: 10px; white-space: nowrap; } .board-intro { font-size: 15px; } .greeting-card h2 { font-size: 36px; } .board-signoff { font-size: 19px; } }

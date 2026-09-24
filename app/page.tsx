@@ -11,7 +11,7 @@ export default function Home() {
       <header className="masthead">
         <Link className="brand" href="/" aria-label="Hello World home"><span aria-hidden="true">✳</span> THE HELLO PROJECT</Link>
         <span className="edition">A LITTLE LOUD. A LOT OF HELLO.</span>
-        <span className="issue">VOL. 001 ↗</span>
+        <Link className="issue board-home" href="/greetings">HELLO BOARD ↗</Link>
       </header>
 
       <section className="stage" aria-labelledby="greeting">
