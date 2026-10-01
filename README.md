@@ -1,9 +1,13 @@
 # The Hello Project
 
-The same Next.js app from Assignment 1, extended with a Supabase-backed **Hello Board** for Assignment 2.
+The same Next.js app from Assignment 1, extended with a Supabase-backed **Hello Board** for Assignment 2 and Google authentication, profiles, and a members-only **Hello Club** for Assignment 3.
 
 - `/`: the original animated, maximalist Hello World page.
 - `/greetings`: a responsive list of greetings fetched from Supabase at request time, with loading, empty, missing-configuration, and error states.
+
+## Assignment 3
+
+Follow [the Google OAuth and profile setup guide](docs/assignment-3-setup.md). Routes: `/login`, `/auth/callback`, `/profile`, and protected `/club`. Run the new profiles migration once in the existing Supabase project and configure Google before testing login.
 
 ## Local setup
 
@@ -37,6 +41,7 @@ The app does not substitute hardcoded sample cards when Supabase is unavailable.
 
 ```bash
 npm run lint
+npm test
 npm run build
 npm start
 ```

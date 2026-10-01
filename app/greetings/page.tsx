@@ -17,7 +17,7 @@ export default async function GreetingsPage() {
       <header className="masthead">
         <Link className="brand" href="/" aria-label="Hello World home"><span aria-hidden="true">✳</span> THE HELLO PROJECT</Link>
         <span className="edition">MANY LANGUAGES. ONE BIG HELLO.</span>
-        <Link className="issue board-home" href="/">← HOME</Link>
+        <nav className="account-nav" aria-label="Main navigation"><Link href="/">HOME</Link><Link href="/club">THE CLUB ↗</Link><Link href="/profile">PROFILE</Link></nav>
       </header>
       <section className="board" aria-labelledby="board-title">
         <div className="board-heading">
