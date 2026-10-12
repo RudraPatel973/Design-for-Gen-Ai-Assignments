@@ -1,18 +1,14 @@
 "use client";
 
 import { useState, type CSSProperties } from "react";
-import Link from "next/link";
+import { AccountHeader } from "@/components/account-header";
 
 export default function Home() {
   const [replay, setReplay] = useState(0);
 
   return (
     <main>
-      <header className="masthead">
-        <Link className="brand" href="/" aria-label="Hello World home"><span aria-hidden="true">✳</span> THE HELLO PROJECT</Link>
-        <span className="edition">A LITTLE LOUD. A LOT OF HELLO.</span>
-        <nav className="account-nav" aria-label="Main navigation"><Link href="/captions">ONLY IN NYC</Link><Link href="/create">CREATE ↗</Link><Link href="/club">THE CLUB ↗</Link><Link href="/profile">PROFILE</Link></nav>
-      </header>
+      <AccountHeader />
 
       <section className="stage" aria-labelledby="greeting">
         <div className="grid" aria-hidden="true" />
