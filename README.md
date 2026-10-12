@@ -7,7 +7,7 @@ The same Next.js app from Assignment 1, extended with a Supabase-backed **Hello 
 
 ## Assignment 4
 
-Only in NYC adds a public `/captions` feed, authenticated `/create` studio, Gemini caption generation, persistent up/down votes, and RLS. Follow [the setup and verification guide](docs/assignment-4-setup.md). A Gemini key and the new database migration are required for live generation/voting. PM feedback still needs to be supplied and implemented.
+Only in NYC adds a public `/captions` feed, authenticated `/create` studio, Gemini caption generation, persistent up/down votes, and RLS. Follow [the setup and verification guide](docs/assignment-4-setup.md). A Gemini key and the new database migration are required for live generation/voting. PM feedback implemented: Google login imports profile names and picture, preserving later edits. Apply the additional Google profile migration described in the guide.
 
 ## Assignment 3
 

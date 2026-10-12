@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getProfile, isComplete } from "@/lib/profile";
 import { AccountHeader } from "@/components/account-header";
+import { googleProfile } from "@/lib/google-profile";
 import { ProfileForm } from "./profile-form";
 
 export const metadata = { title: "Your Profile — The Hello Project" };
@@ -13,6 +14,10 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
     const { data } = await supabase.storage.from("avatars").createSignedUrl(profile.avatar_path, 3600);
     photoUrl = data?.signedUrl;
   }
+  if (!photoUrl && !profile?.avatar_path) {
+    const google = user.identities?.find(identity => identity.provider === "google");
+    if (google) photoUrl = googleProfile(google.identity_data ?? user.user_metadata).photo;
+  }
   return <main><AccountHeader signedIn /><section className="board account-stage">
     <div className="board-heading"><p className="eyebrow">A FACE. A NAME. A FRIENDLIER INTERNET.</p><h1>HEY,<br /><span>THAT’S YOU.</span></h1><p className="board-intro">Your little introduction to the world.</p></div>
     <div className="account-panel profile-panel">
@@ -20,6 +25,7 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
       {actionError && <p role="alert" className="form-message">We couldn’t sign you out. Please try again.</p>}
       {error || !profile ? <p role="alert" className="form-message">Your profile isn’t available yet. Please try again shortly.</p> : <>
         {!isComplete(profile) && <p className="onboarding-note">First, let’s make this personal. Add your first and last name to unlock the Hello Club.</p>}
+        <p className="account-fineprint">We use the name and photo shared by Google to get you started. You can change them below.</p>
         <ProfileForm firstName={profile.first_name ?? ""} lastName={profile.last_name ?? ""} />
         {isComplete(profile) && <Link href="/club" className="club-link">YOU’RE ALL SET. ENTER THE CLUB ↗</Link>}
       </>}

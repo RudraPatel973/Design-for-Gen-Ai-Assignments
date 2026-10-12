@@ -4,15 +4,16 @@
 
 Sam is new to NYC, chronically online, and living on campus. The feed turns relatable campus/subway/food/weekend moments into short, shareable captions. A rotating daily prompt reduces the effort of creating and gives users a reason to return. “Most postable” surfaces community favorites. Copyable captions make content easy to share. Showing the original moment and full prompt makes AI output easier to judge; category filters help users find relevant content instead of voting on an undifferentiated stream.
 
-These are product hypotheses, not measured user outcomes. PM feedback has not been supplied yet; it must be collected and implemented before claiming the feedback portion of the rubric is complete.
+These are product hypotheses, not measured user outcomes. PM feedback: automatically import first name, last name, and picture when users sign in with Google. Implemented: login fills missing names from the verified Google identity, new-user profiles use Google metadata via the signup trigger, and the Profile page displays the Google picture until a user uploads their own. Existing manual names and uploaded photos remain unchanged on future sign-ins. Single-word names or absent provider data still lead to the completion prompt. Live Google login must be verified after applying the migration.
 
 ## Required setup
 
 1. Use the same Supabase project. Ensure the Assignment 3 profiles migration has run.
 2. Run `supabase/migrations/202610110001_create_caption_ratings.sql` once in the SQL Editor.
-3. Get a Gemini API key from Google AI Studio. Add `GEMINI_API_KEY` to `.env.local` and the existing Vercel project's Production/Preview environment variables. Keep it server-only. `GEMINI_MODEL` defaults to `gemini-2.5-flash` and can be changed to an available compatible model.
-4. If the Supabase URL no longer resolves, open the Supabase dashboard and verify the original project is active and its URL matches `SUPABASE_URL`. Restore a paused project if needed; update local/Vercel configuration if the project URL has changed.
-5. Push the commit and redeploy the same Vercel project. Add the deployment-specific `/auth/callback` URL to Supabase's redirect allowlist. Keep deployment protection off.
+3. Run `supabase/migrations/202610110002_google_profile_defaults.sql` once to populate new/existing Google profiles. Existing sessions should sign out and back in to exercise the callback.
+4. Get a Gemini API key from Google AI Studio. Add `GEMINI_API_KEY` to `.env.local` and the existing Vercel project's Production/Preview environment variables. Keep it server-only. `GEMINI_MODEL` defaults to `gemini-2.5-flash` and can be changed to an available compatible model.
+5. If the Supabase URL no longer resolves, open the Supabase dashboard and verify the original project is active and its URL matches `SUPABASE_URL`. Restore a paused project if needed; update local/Vercel configuration if the project URL has changed.
+6. Push the commit and redeploy the same Vercel project. Add the deployment-specific `/auth/callback` URL to Supabase's redirect allowlist. Keep deployment protection off.
 
 ## Behavior
 
@@ -49,7 +50,7 @@ from pg_policies where schemaname = 'public';
 6. Confirm your two accounts cannot publish with each other's generation reservations or submit votes attributed to each other via the Data API.
 7. Test category/top filters and copying. Verify the old Hello Board and profile/photo features still work.
 8. Run the RLS audit above. Verify every public table reports `rowsecurity = true`.
-9. Collect PM feedback, document concrete before/after behavior, implement it, and repeat affected checks. Do not substitute the initial product hypotheses for actual feedback.
+9. Verify the PM change: a fresh Google login should show imported names and photo without manual entry. Edit a name/upload a photo, sign out/in, and confirm your custom profile remains. Existing accounts with missing names should be filled on their next login or by the backfill migration.
 10. Submit the final commit-specific `/captions` URL after live AI creation, voting, and sign-in have been verified.
 
 Sources: [Gemini REST API](https://ai.google.dev/api/generate-content), [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).

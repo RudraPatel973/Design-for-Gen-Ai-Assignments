@@ -53,7 +53,7 @@ Push the commit to the same GitHub repository and deploy the same Vercel project
 
 1. In Incognito, open `/club` and `/profile`: each must redirect to `/login` without showing private content.
 2. Continue with Google. A first signup should create one `profiles` row with the same UUID as the `auth.users` row.
-3. After login, missing names must lead to `/profile`. Attempting `/club` must still return to `/profile`.
+3. After applying `202610110002_google_profile_defaults.sql`, Google names and photo are imported automatically. Only names still missing after import must lead to `/profile`. Attempting `/club` must still return to `/profile`.
 4. Enter both names, optionally upload a JPEG/PNG/WebP smaller than 2 MB, then save.
 5. Enter `/club`: the page should greet you by first name.
 6. Edit your names and upload a new photo. Refresh to verify persistence. Storage should hold the file; `profiles.avatar_path` should hold only a path.
