@@ -5,6 +5,10 @@ The same Next.js app from Assignment 1, extended with a Supabase-backed **Hello 
 - `/`: the original animated, maximalist Hello World page.
 - `/greetings`: a responsive list of greetings fetched from Supabase at request time, with loading, empty, missing-configuration, and error states.
 
+## Assignment 4
+
+Only in NYC adds a public `/captions` feed, authenticated `/create` studio, Gemini caption generation, persistent up/down votes, and RLS. Follow [the setup and verification guide](docs/assignment-4-setup.md). A Gemini key and the new database migration are required for live generation/voting. PM feedback still needs to be supplied and implemented.
+
 ## Assignment 3
 
 Follow [the Google OAuth and profile setup guide](docs/assignment-3-setup.md). Routes: `/login`, `/auth/callback`, `/profile`, and protected `/club`. Run the new profiles migration once in the existing Supabase project and configure Google before testing login.
