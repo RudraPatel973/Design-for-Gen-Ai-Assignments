@@ -2,13 +2,13 @@
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/profile";
 import { validateGeneration } from "@/lib/caption-validation";
-import { buildPrompt, generateCaption } from "@/lib/gemini";
+import { buildPrompt, generateCaption } from "@/lib/ai";
 export type GenerationState = { error?: string; success?: string; caption?: string };
 export async function createCaption(_state: GenerationState, form: FormData): Promise<GenerationState> {
   const { supabase, user } = await requireUser();
   const input = validateGeneration(form.get("topic"), form.get("category"));
   if (!input) return { error: "Describe your moment in 10–400 characters and choose a category." };
-  if (!process.env.GEMINI_API_KEY) return { error: "The caption studio is still getting ready. Please try again later." };
+  if (!process.env.GROQ_API_KEY) return { error: "The caption studio is still getting ready. Please try again later." };
   // An atomic database reservation caps concurrent AI requests at 10 per user/day.
   const { data: requestId, error: limitError } = await supabase.rpc("reserve_caption_generation");
   if (limitError || !requestId) return { error: limitError?.message.includes("daily limit") ? "You’ve reached today’s 10-generation limit. Come back tomorrow." : "The studio couldn’t start your generation. Please try again." };

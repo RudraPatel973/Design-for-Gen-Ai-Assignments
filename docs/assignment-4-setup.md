@@ -11,14 +11,14 @@ These are product hypotheses, not measured user outcomes. PM feedback: automatic
 1. Use the same Supabase project. Ensure the Assignment 3 profiles migration has run.
 2. Run `supabase/migrations/202610110001_create_caption_ratings.sql` once in the SQL Editor.
 3. Run `supabase/migrations/202610110002_google_profile_defaults.sql` once to populate new/existing Google profiles. Existing sessions should sign out and back in to exercise the callback.
-4. Get a Gemini API key from Google AI Studio. Add `GEMINI_API_KEY` to `.env.local` and the existing Vercel project's Production/Preview environment variables. Keep it server-only. `GEMINI_MODEL` defaults to `gemini-2.5-flash` and can be changed to an available compatible model.
+4. Get a Groq API key from GroqCloud. Add `GROQ_API_KEY` to `.env.local` and the existing Vercel project's Production/Preview environment variables. Keep it server-only. `GROQ_MODEL` defaults to `openai/gpt-oss-20b` and can be changed to an available model supporting strict JSON schema output.
 5. If the Supabase URL no longer resolves, open the Supabase dashboard and verify the original project is active and its URL matches `SUPABASE_URL`. Restore a paused project if needed; update local/Vercel configuration if the project URL has changed.
 6. Push the commit and redeploy the same Vercel project. Add the deployment-specific `/auth/callback` URL to Supabase's redirect allowlist. Keep deployment protection off.
 
 ## Behavior
 
 - `/captions`: public feed with category filters, newest/top sorting, aggregate votes, copy caption, and prompt transparency. Signed-out visitors get a sign-in link instead of vote controls.
-- `/create`: gated caption studio. The Server Action independently verifies the user and makes a server-side Gemini request.
+- `/create`: gated caption studio. The Server Action independently verifies the user and makes a server-side Groq request.
 - Voting independently verifies authentication and inserts a new row into `caption_votes` with the caption ID and current user's ID.
 - One immutable vote per user/caption; repeated submissions cannot inflate scores. Captions and votes cannot be edited/deleted through public APIs.
 - A database function reserves each generation attempt atomically. Ten attempts per user per UTC day; failed AI attempts count toward the limit to prevent request abuse.
@@ -53,4 +53,4 @@ from pg_policies where schemaname = 'public';
 9. Verify the PM change: a fresh Google login should show imported names and photo without manual entry. Edit a name/upload a photo, sign out/in, and confirm your custom profile remains. Existing accounts with missing names should be filled on their next login or by the backfill migration.
 10. Submit the final commit-specific `/captions` URL after live AI creation, voting, and sign-in have been verified.
 
-Sources: [Gemini REST API](https://ai.google.dev/api/generate-content), [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).
+Sources: [Groq structured outputs](https://console.groq.com/docs/structured-outputs), [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).
