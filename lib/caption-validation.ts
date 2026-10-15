@@ -1,3 +1,5 @@
+export const tones = ["Dry wit", "Wholesome", "Chaotic"] as const;
+export function captionTone(value: unknown) { return tones.includes(value as typeof tones[number]) ? value as typeof tones[number] : null; }
 export const categories = ["Campus", "Subway", "Food", "Weekend"] as const;
 export type Category = typeof categories[number];
 export function validateGeneration(topic: unknown, category: unknown) {

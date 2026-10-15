@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+import { authDestination, destinationCookie } from "@/lib/auth-destination";
 import Image from "next/image";
 import Link from "next/link";
 import { getProfile, isComplete } from "@/lib/profile";
@@ -7,6 +9,7 @@ import { ProfileForm } from "./profile-form";
 
 export const metadata = { title: "Your Profile — The Hello Project" };
 export default async function ProfilePage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+  const returnTo = authDestination((await cookies()).get(destinationCookie)?.value);
   const { error: actionError } = await searchParams;
   const { supabase, user, profile, error } = await getProfile();
   let photoUrl: string | undefined;
@@ -27,7 +30,7 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
         {!isComplete(profile) && <p className="onboarding-note">First, let’s make this personal. Add your first and last name to unlock the Hello Club.</p>}
         <p className="account-fineprint">We use the name and photo shared by Google to get you started. You can change them below.</p>
         <ProfileForm firstName={profile.first_name ?? ""} lastName={profile.last_name ?? ""} />
-        {isComplete(profile) && <Link href="/club" className="club-link">YOU’RE ALL SET. ENTER THE CLUB ↗</Link>}
+        {isComplete(profile) && <Link href={returnTo} className="club-link">YOU’RE ALL SET. CONTINUE ↗</Link>}
       </>}
     </div>
   </section></main>;

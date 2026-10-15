@@ -141,3 +141,74 @@ button:disabled { opacity: .6; cursor: wait; }
 .generated-preview { padding: 18px; background: var(--yellow); border: 2px solid var(--ink); }
 .generated-preview blockquote { margin: 15px 0; font-size: 22px; font-weight: 800; }
 @media (max-width: 700px) { .daily-challenge { flex-direction: column; align-items: start; } .caption-board .board-heading h1 { font-size: clamp(58px, 13vw, 85px); } }
+
+/* Week 5: content-first layout, clearer controls, and readable cards. */
+.account-nav { gap: 8px 14px; text-transform: uppercase; }
+.account-nav a { padding: 10px 4px; }
+.account-nav a[aria-current="page"] { border-bottom-color: var(--purple); color: var(--purple); }
+.account-header { flex-wrap: wrap; }
+.feed-intro { display: grid; grid-template-columns: 1.2fr 1fr; gap: 45px; align-items: center; margin-bottom: 48px; }
+.caption-board { padding-top: 40px; }
+.feed-intro .board-heading { margin: 0; }
+.caption-board .board-heading h1 { font-size: clamp(62px, 7.5vw, 104px); }
+.feed-intro .eyebrow { margin-bottom: 18px; }
+.feed-intro .board-intro { margin-top: 20px; font-size: 16px; }
+.feed-create { margin-top: 24px; text-decoration: none; }
+.feed-intro .daily-challenge { display: flex; flex-direction: column; align-items: start; gap: 12px; margin: 0; padding: 26px; transform: rotate(1deg); }
+.challenge-mark { font-size: 42px; line-height: 1; }
+.daily-challenge p { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.5; }
+.daily-challenge a { color: var(--ink); font-size: 12px; font-weight: 900; text-underline-offset: 4px; padding: 8px 0; }
+.daily-challenge small { font-size: 11px; line-height: 1.5; }
+.daily-challenge :focus-visible { outline-color: var(--purple); }
+.feed-section-heading { display: flex; align-items: end; justify-content: space-between; gap: 15px; color: #fff9ee; padding-bottom: 22px; border-bottom: 1px solid #ffffff55; }
+.feed-section-heading .eyebrow { margin: 0 0 8px; font-size: 10px; }
+.feed-section-heading h2 { margin: 0; font-size: clamp(25px, 3vw, 36px); letter-spacing: -1px; }
+.feed-section-heading > span { font: 12px 'Courier New', monospace; }
+.feed-filters { padding: 20px 0 24px; gap: 14px; margin-bottom: 0; }
+.feed-filters p { margin: 0 0 13px auto; font-size: 12px; }
+.feed-filters a { color: white; padding: 13px 0; }
+.caption-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+.caption-list .caption-card { background: #fff9ee; padding: 27px; display: flex; flex-direction: column; scroll-margin-top: 24px; }
+.caption-card:target { outline: 5px solid var(--yellow); outline-offset: 5px; }
+.caption-card .card-top { font-size: 10px; }
+.card-top .category-badge { border-radius: 30px; background: var(--pink); padding: 8px 12px; }
+.caption-card:nth-child(3n + 2) .category-badge { background: var(--yellow); }
+.caption-card:nth-child(3n) .category-badge { background: #ffa768; }
+.caption-card p.caption-topic { font-size: 13px; line-height: 1.6; opacity: 1; color: #62536c; max-width: none; margin-top: 22px; }
+.caption-topic > span { display: block; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+.caption-card blockquote { font-size: clamp(21px, 2.2vw, 27px); line-height: 1.45; margin: 20px 0 26px; letter-spacing: -.5px; flex: 1; }
+.caption-score { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; border-top: 1px solid #20102d22; padding: 16px 0; }
+.caption-score strong { font: 800 13px Arial, sans-serif; }
+.caption-score > span { font-size: 11px; color: #62536c; }
+.vote-buttons button { flex: 1; min-height: 44px; border-radius: 4px; }
+.vote-buttons button:first-child { background: var(--yellow); }
+.vote-buttons button:hover { color: var(--ink); background: var(--pink); }
+.vote-login { display: block; text-align: center; color: var(--ink); padding: 14px; background: var(--yellow); border: 2px solid var(--ink); font-size: 12px; font-weight: 900; text-decoration: none; }
+.caption-card .your-vote { background: #e9f5cc; border: 1px solid #60703f; padding: 12px; font-size: 12px; max-width: none; }
+.your-vote > span { display: block; font-size: 11px; margin-top: 3px; }
+.caption-card-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px; }
+.caption-card-footer .copy-caption { margin: 0; border: none; padding: 10px 0; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; }
+.caption-card-footer time { font-size: 11px; color: #62536c; }
+.prompt-details { border-top-color: #20102d22; margin-top: 8px; }
+.caption-card :focus-visible { outline-color: var(--purple); }
+.caption-card .vote-error { color: #8c2451; margin-top: 10px; }
+.moment-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: -12px; font-size: 11px; color: #62536c; }
+.moment-tools button { border: 0; background: transparent; padding: 8px 0; cursor: pointer; text-decoration: underline; font: inherit; color: var(--ink); }
+.moment-tools > span { margin-right: auto; }
+.generation-form > textarea { margin-top: -10px; }
+.generation-form > .replay { justify-content: center; min-height: 48px; }
+.generation-progress, .vote-pending { font-size: 12px; }
+@media (max-width: 850px) { .feed-intro { gap: 25px; } .caption-board .board-heading h1 { font-size: 65px; } .feed-filters p { width: 100%; margin: 0; } }
+@media (max-width: 650px) { .feed-intro { grid-template-columns: 1fr; gap: 30px; } .caption-list { grid-template-columns: 1fr; } .caption-board .board-heading h1 { font-size: clamp(60px, 15vw, 90px); } .caption-list .caption-card { padding: 22px; } .feed-section-heading { align-items: start; flex-direction: column; } .account-nav { gap: 4px 12px; font-size: 10px; } }
+@media (max-width: 650px) {
+  .feed-intro { margin-bottom: 28px; gap: 24px; }
+  .caption-board .board-heading h1 { font-size: clamp(46px, 13vw, 65px); }
+  .feed-intro .board-intro { font-size: 15px; margin-top: 16px; }
+  .feed-intro .daily-challenge { transform: none; padding: 18px; gap: 8px; }
+  .daily-challenge .challenge-mark { display: none; }
+  .daily-challenge p { font-size: 16px; }
+  .daily-challenge small { display: none; }
+  .feed-intro .eyebrow { letter-spacing: 1px; }
+  .account-nav { font-size: 11px; }
+  .account-nav a { padding-block: 11px; }
+}

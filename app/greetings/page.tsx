@@ -1,3 +1,4 @@
+import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 import { AccountHeader } from "@/components/account-header";
 import { connection } from "next/server";
@@ -11,10 +12,12 @@ export const metadata: Metadata = {
 export default async function GreetingsPage() {
   await connection();
   const result = await getGreetings();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
   return (
     <main className="board-page">
-      <AccountHeader />
+      <AccountHeader signedIn={Boolean(user)} />
       <section className="board" aria-labelledby="board-title">
         <div className="board-heading">
           <p className="eyebrow">SMALL WORDS. WORLDWIDE CONNECTIONS.</p>

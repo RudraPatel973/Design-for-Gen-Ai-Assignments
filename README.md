@@ -5,6 +5,10 @@ The same Next.js app from Assignment 1, extended with a Supabase-backed **Hello 
 - `/`: the original animated, maximalist Hello World page.
 - `/greetings`: a responsive list of greetings fetched from Supabase at request time, with loading, empty, missing-configuration, and error states.
 
+## Assignment 5
+
+Read [the Week 5 iteration notes](docs/assignment-5.md) for the feed/studio improvements, login return flow, and review checklist. No new SQL migration is required for this iteration.
+
 ## Assignment 4
 
 Only in NYC adds a public `/captions` feed, authenticated `/create` studio, Groq caption generation, persistent up/down votes, and RLS. Follow [the setup and verification guide](docs/assignment-4-setup.md). A Groq key and the new database migration are required for live generation/voting. PM feedback implemented: Google login imports profile names and picture, preserving later edits. Apply the additional Google profile migration described in the guide.

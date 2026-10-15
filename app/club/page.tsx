@@ -5,7 +5,7 @@ import { AccountHeader } from "@/components/account-header";
 
 export const metadata = { title: "Hello Club — Members Only" };
 export default async function Club() {
-  const { profile, error } = await getProfile();
+  const { profile, error } = await getProfile("/club");
   if (error || !isComplete(profile)) redirect("/profile");
   return <main><AccountHeader signedIn /><section className="board account-stage">
     <div className="board-heading"><p className="eyebrow">MEMBERS ONLY. YOU’RE ONE OF US.</p><h1>HELLO,<br /><span>FRIEND!</span></h1><p className="board-intro">Welcome to the club, {profile!.first_name}.</p></div>

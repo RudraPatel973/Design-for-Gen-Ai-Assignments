@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+import { authDestination, destinationCookie } from "@/lib/auth-destination";
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { googleProfile } from "@/lib/google-profile";
@@ -28,5 +30,9 @@ export async function GET(request: NextRequest) {
     }
   }
   const { data: profile } = await supabase.from("profiles").select("id, first_name, last_name, avatar_path").eq("id", user.id).maybeSingle();
-  return destination(isComplete(profile) ? "/club" : "/profile");
+  if (!isComplete(profile)) return destination("/profile");
+  const store = await cookies();
+  const returnTo = authDestination(store.get(destinationCookie)?.value);
+  store.delete(destinationCookie);
+  return destination(returnTo);
 }

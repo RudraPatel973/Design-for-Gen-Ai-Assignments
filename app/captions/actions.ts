@@ -4,7 +4,7 @@ import { requireUser } from "@/lib/profile";
 import { validateVote } from "@/lib/caption-validation";
 export type VoteState = { error?: string; success?: string };
 export async function vote(_state: VoteState, form: FormData): Promise<VoteState> {
-  const { supabase, user } = await requireUser();
+  const { supabase, user } = await requireUser("/captions");
   const id = form.get("caption_id");
   const value = form.get("value");
   if (!validateVote(id, value)) return { error: "Please choose a valid caption and vote." };
