@@ -4,7 +4,7 @@ import { useFormStatus } from "react-dom";
 import { vote } from "./actions";
 function VoteButtons() {
   const { pending } = useFormStatus();
-  return <><div className="vote-buttons"><button type="submit" name="value" value="1" disabled={pending} aria-label="Rate this caption: I would post it">↑ POST IT</button><button type="submit" name="value" value="-1" disabled={pending} aria-label="Rate this caption: I would skip it">↓ SKIP IT</button></div>{pending && <p role="status" className="vote-pending">Saving your vote…</p>}</>;
+  return <><div className="vote-buttons"><button type="submit" name="value" value="1" disabled={pending} aria-label="Upvote this caption">↑ UPVOTE</button><button type="submit" name="value" value="-1" disabled={pending} aria-label="Downvote this caption">↓ DOWNVOTE</button></div>{pending && <p role="status" className="vote-pending">Saving your vote…</p>}</>;
 }
 export function VoteForm({ id }: { id: string }) {
   const [state, action] = useActionState(vote, {});
