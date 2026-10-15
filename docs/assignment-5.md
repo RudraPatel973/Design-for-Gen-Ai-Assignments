@@ -13,7 +13,7 @@ This iteration was requested before the feedback meeting. The improvements below
 
 ## Deployment
 
-No new database migration, API key, or Vercel project is needed. Deploy the same repository/project with its existing Supabase and Groq environment variables. Add the new deployment's exact `/auth/callback` to Supabase's redirect allowlist before testing Google login on its commit-specific domain. Keep Vercel deployment protection off.
+The image/GIF attachment follow-up uses `supabase/migrations/202610150001_caption_media.sql`, applied once to the existing database. It adds nullable `media_path`, a public `caption-media` bucket, owner-restricted uploads, and a separate media-aware feed RPC. Older caption feeds and text-only cards still work. No new API key or Vercel project is needed. Deploy the same repository/project with its existing Supabase and Groq environment variables. Add the new deployment's exact `/auth/callback` to Supabase's redirect allowlist before testing Google login on its commit-specific domain. Keep Vercel deployment protection off.
 
 ## Checks
 
@@ -27,3 +27,9 @@ No new database migration, API key, or Vercel project is needed. Deploy the same
 ## Feedback meeting notes
 
 Pending: paste the PM/group's actual feedback here, identify the concrete change made in response, and note how it was verified.
+
+## Image/GIF attachment follow-up
+
+Users can attach JPEG, PNG, WebP, or animated GIF files up to 3 MB. The studio previews the file and allows removal before publishing. Media is uploaded to Supabase Storage; the database contains only its path. Media remains public with the published caption. Full-size links preserve meme text and GIFs use unoptimized delivery to retain animation.
+
+The AI model writes from the user's text description; it does not inspect image pixels. This is stated in the form. Invalid/oversized files are rejected before generation, and failed database saves clean up their uploads. Published assets cannot be deleted through the public API.

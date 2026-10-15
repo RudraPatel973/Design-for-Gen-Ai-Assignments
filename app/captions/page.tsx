@@ -1,3 +1,5 @@
+import Image from "next/image";
+import { validMediaPath } from "@/lib/caption-media";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { AccountHeader } from "@/components/account-header";
@@ -5,14 +7,14 @@ import { categories } from "@/lib/caption-validation";
 import { dailyPrompt } from "@/lib/daily-prompt";
 import { VoteForm, CopyCaption, CaptionAnchor } from "./caption-interactions";
 export const metadata = { title: "Only in NYC — AI Captions, Human Taste" };
-type Caption = { id: string; topic: string; category: string; caption: string; prompt: string; model: string; created_at: string; upvotes: number; downvotes: number };
+type Caption = { id: string; topic: string; category: string; caption: string; prompt: string; model: string; created_at: string; media_path?: string | null; upvotes: number; downvotes: number };
 export default async function Captions({ searchParams }: { searchParams: Promise<{ category?: string; sort?: string }> }) {
   const params = await searchParams;
   const category = categories.includes(params.category as typeof categories[number]) ? params.category : null;
   const sort = params.sort === "top" ? "top" : "new";
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  const { data, error } = await supabase.rpc("caption_feed", { chosen_category: category, chosen_sort: sort });
+  const { data, error } = await supabase.rpc("caption_media_feed", { chosen_category: category, chosen_sort: sort });
   const captions = (data ?? []) as Caption[];
   const { data: votes, error: votesError } = user && captions.length ? await supabase.from("caption_votes").select("caption_id, value").eq("user_id", user.id).in("caption_id", captions.map(c => c.id)) : { data: [], error: null };
   const personalVotes = new Map((votes ?? []).map(v => [v.caption_id, v.value]));
@@ -27,8 +29,10 @@ export default async function Captions({ searchParams }: { searchParams: Promise
     {error ? <div className="board-message" role="alert"><h2>The feed couldn’t load.</h2><p>Please try again in a moment.</p><Link className="replay" href="/captions">RETRY ↻</Link></div> : !captions.length ? <div className="board-message"><h2>{category ? `No ${category.toLowerCase()} moments yet.` : "Be the first to start something."}</h2><p>Turn a NYC moment into a caption for the crowd to rate.</p><Link className="replay" href={user ? "/create" : "/login?next=%2Fcreate"}>CREATE A CAPTION ↗</Link>{category && <p><Link href="/captions">Browse all categories</Link></p>}</div> : <ul className="greeting-list caption-list">{captions.map(c => {
       const count = Number(c.upvotes) + Number(c.downvotes);
       const rating = personalVotes.get(c.id);
+      const mediaUrl = validMediaPath(c.media_path) ? supabase.storage.from("caption-media").getPublicUrl(c.media_path).data.publicUrl : null;
       return <li className="greeting-card caption-card" key={c.id} id={`caption-${c.id}`} tabIndex={-1}>
-        <div className="card-top"><span className="category-badge">{c.category}</span><span>AI GENERATED</span></div>
+        <div className="card-top"><span className="category-badge">{c.category}</span><span>AI CAPTION</span></div>
+        {mediaUrl && <a className="caption-media" href={mediaUrl} target="_blank" rel="noopener noreferrer" aria-label="Open attached image or GIF at full size"><Image src={mediaUrl} alt={`Image attached to: ${c.topic}`} width={640} height={480} unoptimized /><span>View full image ↗</span></a>}
         <p className="caption-topic"><span>The moment</span>{c.topic}</p><blockquote>{c.caption}</blockquote>
         <div className="caption-score"><strong>{count ? `${Math.round(Number(c.upvotes) / count * 100)}% would post` : "Be the first to rate"}</strong><span>{count} {count === 1 ? "vote" : "votes"} · ↑ {c.upvotes} / ↓ {c.downvotes}</span></div>
         {!user ? <Link className="vote-login" href="/login?next=%2Fcaptions">SIGN IN TO RATE ↗</Link> : votesError ? <p className="your-vote">Ratings temporarily unavailable.</p> : rating ? <div className="your-vote" role="status">✓ YOUR VOTE: {rating === 1 ? "POST IT ↑" : "SKIP IT ↓"}<span>Saved to your account</span></div> : <VoteForm id={c.id} />}

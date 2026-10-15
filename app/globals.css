@@ -212,3 +212,12 @@ button:disabled { opacity: .6; cursor: wait; }
   .account-nav { font-size: 11px; }
   .account-nav a { padding-block: 11px; }
 }
+
+.media-upload { border: 2px dashed #80628d; padding: 16px; display: grid; gap: 12px; background: #f5edf8; }
+.media-upload input { font-size: 12px; }
+.media-upload .account-fineprint { margin: 0; }
+.media-preview img { display: block; width: 100%; height: auto; max-height: 280px; object-fit: contain; background: #eee7f0; }
+.media-preview button { margin-top: 10px; background: transparent; border: 0; padding: 8px 0; color: var(--ink); text-decoration: underline; cursor: pointer; font: inherit; font-size: 12px; }
+.caption-media { display: block; margin-top: 20px; color: var(--ink); text-decoration: none; background: #eee7f0; border: 1px solid #20102d33; }
+.caption-media img { display: block; width: 100%; height: auto; max-height: 340px; object-fit: contain; }
+.caption-media > span { display: block; padding: 10px; font-size: 11px; text-align: right; }
