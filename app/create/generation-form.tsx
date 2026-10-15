@@ -15,7 +15,7 @@ export function GenerationForm({ dailyPrompt, dailyCategory }: { dailyPrompt: st
   const [topic, setTopic] = useState(dailyPrompt);
   const [category, setCategory] = useState(dailyCategory);
   const [tone, setTone] = useState("Dry wit");
-  return <form action={action} className="profile-form generation-form">
+  return <form action={action} onReset={event => event.preventDefault()} className="profile-form generation-form">
     <div className="name-fields"><label>The vibe<select name="category" value={category} onChange={e => setCategory(e.target.value)}>{categories.map(c => <option key={c}>{c}</option>)}</select></label>
     <label>Your tone<select name="tone" value={tone} onChange={e => setTone(e.target.value)}>{tones.map(t => <option key={t}>{t}</option>)}</select></label></div>
     <label htmlFor="moment">Your NYC moment</label><textarea id="moment" name="topic" required minLength={10} maxLength={400} rows={4} value={topic} onChange={e => setTopic(e.target.value)} aria-describedby="moment-help" />

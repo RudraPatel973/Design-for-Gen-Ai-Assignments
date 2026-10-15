@@ -1,5 +1,5 @@
 "use client";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { vote } from "./actions";
 function VoteButtons() {
@@ -13,4 +13,14 @@ export function VoteForm({ id }: { id: string }) {
 export function CopyCaption({ text }: { text: string }) {
   const [message, setMessage] = useState("COPY CAPTION ↗");
   return <button type="button" className="copy-caption" onClick={async () => {try {await navigator.clipboard.writeText(text);setMessage("COPIED ✓");}catch {setMessage("SELECT TEXT TO COPY");}}} aria-live="polite">{message}</button>;
+}
+
+export function CaptionAnchor() {
+  useEffect(() => {
+    if (!/^#caption-[0-9a-f-]+$/i.test(window.location.hash)) return;
+    const card = document.getElementById(window.location.hash.slice(1));
+    card?.scrollIntoView({ block: "start" });
+    card?.focus({ preventScroll: true });
+  }, []);
+  return null;
 }

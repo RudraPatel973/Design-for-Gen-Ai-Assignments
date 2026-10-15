@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { AccountHeader } from "@/components/account-header";
 import { categories } from "@/lib/caption-validation";
 import { dailyPrompt } from "@/lib/daily-prompt";
-import { VoteForm, CopyCaption } from "./caption-interactions";
+import { VoteForm, CopyCaption, CaptionAnchor } from "./caption-interactions";
 export const metadata = { title: "Only in NYC — AI Captions, Human Taste" };
 type Caption = { id: string; topic: string; category: string; caption: string; prompt: string; model: string; created_at: string; upvotes: number; downvotes: number };
 export default async function Captions({ searchParams }: { searchParams: Promise<{ category?: string; sort?: string }> }) {
@@ -36,6 +36,6 @@ export default async function Captions({ searchParams }: { searchParams: Promise
         <details className="prompt-details"><summary>See the AI prompt</summary><p>{c.prompt}</p><p>Generated with {c.model}</p></details>
       </li>;
     })}</ul>}
-    <p className="board-signoff">The city writes the setup. You pick the punchline. ↗</p>
+    <CaptionAnchor /><p className="board-signoff">The city writes the setup. You pick the punchline. ↗</p>
   </section></main>;
 }

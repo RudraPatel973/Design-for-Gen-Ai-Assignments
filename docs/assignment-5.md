@@ -22,7 +22,7 @@ No new database migration, API key, or Vercel project is needed. Deploy the same
 - Tone validation tests reject unknown styles; daily challenge categories are validated.
 - Local production HTTP checks cover public navigation, anonymous route protection, exact OAuth callback, PKCE, return-destination cookie, and existing Supabase vote counts.
 - Desktop/mobile browser review of the live-data feed.
-- Full Google login, authenticated generation, voting, and persistence should be demonstrated from the final deployment during the feedback session. A passing build or mocked test does not by itself verify these real account actions.
+- Verified on the deployed app in Chrome: Google login returned directly to `/create`, a caption was generated/published, a vote was submitted, and the caption’s vote count and personal rating persisted after reload. The test published a Riverside Park caption using the Wholesome tone. Follow-up fixes preserve studio select values after submit and scroll/focus the newly created card after streamed navigation. Recheck those final refinements in the final deployment.
 
 ## Feedback meeting notes
 
