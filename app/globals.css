@@ -233,3 +233,9 @@ button:disabled { opacity: .6; cursor: wait; }
 .custom-moment { display: grid; gap: 10px; }
 .custom-moment textarea { width: 100%; }
 .studio-step { margin: 8px 0 -8px; }
+
+.account-menu { position: relative; }
+.account-menu summary { cursor: pointer; padding: 10px 4px; }
+.account-menu:has(a[aria-current="page"]) summary { color: var(--purple); }
+.account-menu-panel { position: absolute; right: 0; top: 100%; z-index: 20; display: grid; gap: 12px; min-width: 160px; background: #fffaf0; color: var(--ink); padding: 16px; border: 2px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+.account-menu-panel button { width: 100%; }

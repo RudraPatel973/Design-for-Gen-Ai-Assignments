@@ -7,7 +7,7 @@ import { AccountHeader } from "@/components/account-header";
 import { googleProfile } from "@/lib/google-profile";
 import { ProfileForm } from "./profile-form";
 
-export const metadata = { title: "Your Profile — The Hello Project" };
+export const metadata = { title: "Your Profile — Only in NYC" };
 export default async function ProfilePage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   const returnTo = authDestination((await cookies()).get(destinationCookie)?.value);
   const { error: actionError } = await searchParams;
@@ -27,7 +27,7 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
       <div className="profile-identity">{photoUrl ? <Image src={photoUrl} alt="Your profile photo" width={96} height={96} unoptimized className="profile-avatar" /> : <div className="profile-avatar avatar-placeholder" aria-label="No profile photo">✳</div>}<div><h2>{profile?.first_name || "Nice to meet you!"}</h2><p className="profile-email">{user.email}</p></div></div>
       {actionError && <p role="alert" className="form-message">We couldn’t sign you out. Please try again.</p>}
       {error || !profile ? <p role="alert" className="form-message">Your profile isn’t available yet. Please try again shortly.</p> : <>
-        {!isComplete(profile) && <p className="onboarding-note">First, let’s make this personal. Add your first and last name to unlock the Hello Club.</p>}
+        {!isComplete(profile) && <p className="onboarding-note">First, let’s make this personal. Add your first and last name to finish setting up your account.</p>}
         <p className="account-fineprint">We use the name and photo shared by Google to get you started. You can change them below.</p>
         <ProfileForm firstName={profile.first_name ?? ""} lastName={profile.last_name ?? ""} />
         {isComplete(profile) && <Link href={returnTo} className="club-link">YOU’RE ALL SET. CONTINUE ↗</Link>}
