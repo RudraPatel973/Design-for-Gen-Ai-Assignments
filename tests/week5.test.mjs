@@ -5,7 +5,7 @@ import { captionTone, categories } from '../lib/caption-validation.ts';
 import { dailyChallenge } from '../lib/daily-prompt.ts';
 
 test('login returns only to known internal pages, rejecting open redirects', () => {
-  for (const path of ['/create','/captions','/club','/profile']) assert.equal(authDestination(path),path);
+  for (const path of ['/create','/captions','/prompts','/mine','/club','/profile']) assert.equal(authDestination(path),path);
   for (const path of ['https://evil.test','//evil.test','/\\evil.test','/create?next=https://evil.test','javascript:alert(1)',null,undefined]) assert.equal(authDestination(path),'/captions');
 });
 test('generation styles accept only the supported choices', () => {

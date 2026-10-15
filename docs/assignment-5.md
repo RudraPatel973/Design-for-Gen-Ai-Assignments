@@ -33,3 +33,13 @@ Pending: paste the PM/group's actual feedback here, identify the concrete change
 Users can attach JPEG, PNG, WebP, or animated GIF files up to 3 MB. The studio previews the file and allows removal before publishing. Media is uploaded to Supabase Storage; the database contains only its path. Media remains public with the published caption. Full-size links preserve meme text and GIFs use unoptimized delivery to retain animation.
 
 The AI model writes from the user's text description; it does not inspect image pixels. This is stated in the form. Invalid/oversized files are rejected before generation, and failed database saves clean up their uploads. Published assets cannot be deleted through the public API.
+
+## Crowd-picked prompts and personal stats
+
+Run `supabase/migrations/202610150002_crowd_prompts.sql` once in the Supabase SQL Editor **before** deploying, because the feed now reads `caption_prompt_feed`.
+
+- **Pick tomorrow (`/prompts`):** signed-in users suggest up to 3 moments per UTC day and vote on others' (one vote each, not on their own). Voting on a suggestion closes at midnight UTC. Groq screens each suggestion first and rejects ones aimed at an identifiable person, incident, or rumor.
+- **Today's prompt:** the previous UTC day's top suggestion with a net score of at least +1 (ties go to the earliest). Otherwise the built-in starter rotation is used.
+- **Everyone's take (`/captions?day=YYYY-MM-DD`):** captions made from the daily prompt store `prompt_date`. The server sets both topic and date from its own current prompt, never client text.
+- **My captions (`/mine`):** auth-protected totals, approval %, best caption, and every caption's votes via `my_caption_stats()`, which returns only the caller's rows.
+- Known limit: the AI screen runs in the server action, so a user calling the Supabase API directly could skip it (the same trust level as caption inserts). Crowd downvotes and the +1 threshold remain as a backstop.

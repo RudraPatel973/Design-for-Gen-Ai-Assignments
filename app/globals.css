@@ -239,3 +239,25 @@ button:disabled { opacity: .6; cursor: wait; }
 .account-menu:has(a[aria-current="page"]) summary { color: var(--purple); }
 .account-menu-panel { position: absolute; right: 0; top: 100%; z-index: 20; display: grid; gap: 12px; min-width: 160px; background: #fffaf0; color: var(--ink); padding: 16px; border: 2px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); }
 .account-menu-panel button { width: 100%; }
+
+/* Crowd-picked prompts and personal stats. */
+.challenge-links { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.feed-day-prompt { margin: 10px 0 0; max-width: 60ch; font: italic 16px Georgia, serif; color: var(--yellow); }
+.card-top .prompt-day-link { color: var(--ink); text-underline-offset: 3px; }
+.prompts-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 40px; align-items: start; }
+.prompts-layout .account-panel .replay { margin-top: 12px; text-decoration: none; }
+.suggest-form > label:first-child { font-size: 18px; }
+.prompts-leader { color: #fff9ee; font-size: 14px; line-height: 1.5; margin: 16px 0 22px; }
+.suggestion-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; }
+.suggestion-list .suggestion-card { background: #fff9ee; padding: 22px; }
+.suggestion-card blockquote { font-size: clamp(18px, 1.8vw, 22px); margin: 16px 0 18px; }
+.suggestion-card .your-vote { background: #e9f5cc; border: 1px solid #60703f; padding: 12px; max-width: none; }
+.stats-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 0 0 32px; }
+.stats-row > div { background: #fff9ee; border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); padding: 18px; }
+.stats-row dt { font: 700 11px 'Courier New', monospace; text-transform: uppercase; letter-spacing: 1px; }
+.stats-row dd { margin: 8px 0 0; font: 1000 clamp(28px, 4vw, 44px) Impact, 'Arial Black', Arial, sans-serif; }
+.best-caption { flex-direction: column; align-items: start; gap: 10px; margin-bottom: 40px; }
+.mine-list { margin-top: 26px; }
+.mine-list .club-link { margin-top: 0; }
+@media (max-width: 950px) { .prompts-layout { grid-template-columns: 1fr; } }
+@media (max-width: 650px) { .stats-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

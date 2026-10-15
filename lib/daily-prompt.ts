@@ -9,3 +9,5 @@ const moments = [
 ];
 export function dailyChallenge(date = new Date()) { return moments[Math.floor(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) / 86400000) % moments.length]; }
 export function dailyPrompt(date = new Date()) { return dailyChallenge(date).topic; }
+export function utcDay(date = new Date()) { return date.toISOString().slice(0, 10); }
+export function validDay(value: unknown) { return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(`${value}T00:00:00Z`)) && utcDay(new Date(`${value}T00:00:00Z`)) === value ? value : null; }

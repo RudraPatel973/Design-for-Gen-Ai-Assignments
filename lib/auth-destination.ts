@@ -1,4 +1,4 @@
-const destinations = ["/captions", "/create", "/club", "/profile"];
+const destinations = ["/captions", "/create", "/prompts", "/mine", "/club", "/profile"];
 export function authDestination(value: unknown) {
   return typeof value === "string" && destinations.includes(value) ? value : "/captions";
 }

@@ -4,10 +4,19 @@ import { requireUser } from "@/lib/profile";
 import { captionTone, validateGeneration } from "@/lib/caption-validation";
 import { captionMediaExtension, maxCaptionMediaBytes } from "@/lib/caption-media";
 import { buildPrompt, generateCaption } from "@/lib/ai";
+import { getTodaysPrompt } from "@/lib/todays-prompt";
 export type GenerationState = { error?: string; success?: string; caption?: string; id?: string };
 export async function createCaption(_state: GenerationState, form: FormData): Promise<GenerationState> {
   const { supabase, user } = await requireUser("/create");
-  const input = validateGeneration(form.get("topic"), form.get("category"));
+  // Daily-prompt captions use the server's current prompt, never client-supplied text, so they group correctly.
+  let promptDate: string | null = null;
+  let topic = form.get("topic");
+  if (form.get("prompt_day")) {
+    const today = await getTodaysPrompt(supabase);
+    if (form.get("prompt_day") !== today.day) return { error: "Today’s prompt just changed. Refresh the page to see the new one." };
+    topic = today.topic; promptDate = today.day;
+  }
+  const input = validateGeneration(topic, form.get("category"));
   const tone = captionTone(form.get("tone"));
   if (!input || !tone) return { error: "Describe your moment in 10–400 characters and choose a category and tone." };
   if (!process.env.GROQ_API_KEY) return { error: "The caption studio is still getting ready. Please try again later." };
@@ -34,11 +43,12 @@ export async function createCaption(_state: GenerationState, form: FormData): Pr
       .upload(mediaPath, attachment.bytes, { contentType: attachment.type, upsert: false });
     if (uploadError) return { error: "Your caption was generated, but the attachment couldn’t be uploaded. Please try again." };
   }
-  const { data: saved, error } = await supabase.from("captions").insert({ creator_id: user.id, request_id: requestId, topic: input.topic, category: input.category, prompt, caption: generated.caption, model: generated.model, ...(mediaPath ? { media_path: mediaPath } : {}) }).select("id").single();
+  const { data: saved, error } = await supabase.from("captions").insert({ creator_id: user.id, request_id: requestId, topic: input.topic, category: input.category, prompt, caption: generated.caption, model: generated.model, ...(mediaPath ? { media_path: mediaPath } : {}), ...(promptDate ? { prompt_date: promptDate } : {}) }).select("id").single();
   if (error || !saved) {
     if (mediaPath) await supabase.storage.from("caption-media").remove([mediaPath]);
     return { error: "Your caption couldn’t be published. Please try again later." };
   }
   revalidatePath("/captions");
+  revalidatePath("/mine");
   return { success: "Published! Your caption is ready for the crowd to rate.", caption: generated.caption, id: saved.id };
 }
