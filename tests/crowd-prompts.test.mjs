@@ -18,3 +18,17 @@ test('prompt days are real UTC calendar dates', () => {
   assert.equal(validDay('2026-10-15'), '2026-10-15');
   for (const value of ['2026-02-30', '2026-13-01', '15-10-2026', "2026-10-15' or 1=1", '', null, undefined]) assert.equal(validDay(value), null);
 });
+
+import { fillTemplate, pickWeighted } from '../lib/chain-template.ts';
+test('chain templates fill known placeholders and keep unknown ones visible', () => {
+  assert.equal(fillTemplate('Moment: {{moment}} / {{ tone }} / {{oops}}', { moment: '"x"', tone: 'Dry wit' }), 'Moment: "x" / Dry wit / {{oops}}');
+  assert.equal(fillTemplate('{{previous_output}}{{previous_output}}', { previous_output: 'a$1' }), 'a$1a$1');
+});
+test('surprise tone respects mix weights', () => {
+  const options = [{ value: 'A', weight: 40 }, { value: 'B', weight: 0 }, { value: 'C', weight: 60 }];
+  assert.equal(pickWeighted(options, 0), 'A');
+  assert.equal(pickWeighted(options, 0.39), 'A');
+  assert.equal(pickWeighted(options, 0.41), 'C');
+  assert.equal(pickWeighted(options, 0.999), 'C');
+  assert.equal(pickWeighted([{ value: 'A', weight: 0 }], 0.5), null);
+});

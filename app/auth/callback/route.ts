@@ -18,6 +18,12 @@ export async function GET(request: NextRequest) {
   if (error) return destination("/login?error=callback");
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return destination("/login?error=callback");
+  // Admin-managed allowlist: approved email domains plus individually whitelisted addresses.
+  const { data: allowed, error: allowedError } = await supabase.rpc("is_sign_in_allowed");
+  if (allowedError || allowed !== true) {
+    await supabase.auth.signOut({ scope: "local" });
+    return destination(allowedError ? "/login?error=callback" : "/login?error=not-allowed");
+  }
   const google = user.identities?.find(identity => identity.provider === "google");
   if (google) {
     const imported = googleProfile(google.identity_data ?? user.user_metadata);

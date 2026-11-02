@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/profile";
 import { captionTone, validateGeneration } from "@/lib/caption-validation";
 import { captionMediaExtension, maxCaptionMediaBytes } from "@/lib/caption-media";
-import { buildPrompt, generateCaption } from "@/lib/ai";
+import { runCaptionChain } from "@/lib/chain";
 import { getTodaysPrompt } from "@/lib/todays-prompt";
 export type GenerationState = { error?: string; success?: string; caption?: string; id?: string };
 export async function createCaption(_state: GenerationState, form: FormData): Promise<GenerationState> {
@@ -32,9 +32,8 @@ export async function createCaption(_state: GenerationState, form: FormData): Pr
   // An atomic database reservation caps concurrent AI requests at 10 per user/day.
   const { data: requestId, error: limitError } = await supabase.rpc("reserve_caption_generation");
   if (limitError || !requestId) return { error: limitError?.message.includes("daily limit") ? "You’ve reached today’s 10-generation limit. Come back tomorrow." : "The studio couldn’t start your generation. Please try again." };
-  const prompt = buildPrompt(input.topic, input.category, tone);
   let generated;
-  try { generated = await generateCaption(prompt); }
+  try { generated = await runCaptionChain({ supabase, userId: user.id, requestId, topic: input.topic, category: input.category, tone }); }
   catch (error) { return { error: error instanceof Error && error.message === "AI_BUSY" ? "The AI is busy. Try again in a moment." : "The AI couldn’t create a caption. Please try another moment. This attempt counts toward today’s limit." }; }
   let mediaPath: string | null = null;
   if (attachment) {
@@ -43,12 +42,14 @@ export async function createCaption(_state: GenerationState, form: FormData): Pr
       .upload(mediaPath, attachment.bytes, { contentType: attachment.type, upsert: false });
     if (uploadError) return { error: "Your caption was generated, but the attachment couldn’t be uploaded. Please try again." };
   }
-  const { data: saved, error } = await supabase.from("captions").insert({ creator_id: user.id, request_id: requestId, topic: input.topic, category: input.category, prompt, caption: generated.caption, model: generated.model, ...(mediaPath ? { media_path: mediaPath } : {}), ...(promptDate ? { prompt_date: promptDate } : {}) }).select("id").single();
+  const { data: saved, error } = await supabase.from("captions").insert({ creator_id: user.id, request_id: requestId, topic: input.topic, category: input.category, prompt: generated.prompt, caption: generated.caption, model: generated.model, prompt_chain_id: generated.chainId, ...(mediaPath ? { media_path: mediaPath } : {}), ...(promptDate ? { prompt_date: promptDate } : {}) }).select("id").single();
   if (error || !saved) {
     if (mediaPath) await supabase.storage.from("caption-media").remove([mediaPath]);
     return { error: "Your caption couldn’t be published. Please try again later." };
   }
+  // Uploads also go into the admin-managed image library.
+  if (mediaPath) await supabase.from("images").insert({ storage_path: mediaPath, description: input.topic.slice(0, 400), uploaded_by: user.id, caption_id: saved.id }).then(() => undefined, () => undefined);
   revalidatePath("/captions");
   revalidatePath("/mine");
-  return { success: "Published! Your caption is ready for the crowd to rate.", caption: generated.caption, id: saved.id };
+  return { success: tone === "Surprise me" ? `Published with a surprise ${generated.tone.toLowerCase()} tone! Your caption is ready for the crowd to rate.` : "Published! Your caption is ready for the crowd to rate.", caption: generated.caption, id: saved.id };
 }

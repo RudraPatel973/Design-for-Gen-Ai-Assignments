@@ -1,4 +1,4 @@
-export const tones = ["Dry wit", "Wholesome", "Chaotic"] as const;
+export const tones = ["Dry wit", "Wholesome", "Chaotic", "Surprise me"] as const;
 export function captionTone(value: unknown) { return tones.includes(value as typeof tones[number]) ? value as typeof tones[number] : null; }
 export const categories = ["Campus", "Subway", "Food", "Weekend"] as const;
 export type Category = typeof categories[number];
