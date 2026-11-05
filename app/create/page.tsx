@@ -3,6 +3,8 @@ import { getTodaysPrompt } from "@/lib/todays-prompt";
 import { AccountHeader } from "@/components/account-header";
 import { GenerationForm } from "./generation-form";
 export const metadata = { title: "Caption Studio — Only in NYC" };
+// Three chain steps (one reads the photo) can take longer than the default limit.
+export const maxDuration = 90;
 export default async function Create() {
   const { supabase } = await requireUser("/create");
   const today = await getTodaysPrompt(supabase);

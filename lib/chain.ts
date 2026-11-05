@@ -4,11 +4,11 @@ import { buildPrompt, callChatJson, callChatText } from "./ai";
 import { parseCaption } from "./caption-validation";
 import { fillTemplate, pickWeighted } from "./chain-template";
 
-type Step = { id: number; step_order: number; description: string; system_prompt: string; user_prompt: string; temperature: number; output_type: "text" | "caption";
+type Step = { id: number; step_order: number; description: string; system_prompt: string; user_prompt: string; temperature: number; output_type: "text" | "caption"; input_image: boolean;
   model: { provider_model_id: string; is_active: boolean; provider: { name: string; base_url: string; api_key_env: string } } };
 type Chain = { id: number; name: string; description: string; steps: Step[] };
 export type ChainResult = { caption: string; model: string; prompt: string; chainId: number | null; tone: string };
-type Context = { supabase: SupabaseClient; userId: string; requestId: string; topic: string; category: string; tone: string };
+type Context = { supabase: SupabaseClient; userId: string; requestId: string; topic: string; category: string; tone: string; image?: string };
 
 // "Surprise me" picks a chain using the admin-managed mix weights.
 async function resolveTone(supabase: SupabaseClient, tone: string) {
@@ -23,7 +23,7 @@ async function resolveTone(supabase: SupabaseClient, tone: string) {
 
 async function loadChain(supabase: SupabaseClient, tone: string): Promise<Chain | null> {
   const { data } = await supabase.from("prompt_chains")
-    .select("id, name, description, steps:prompt_chain_steps(id, step_order, description, system_prompt, user_prompt, temperature, output_type, model:llm_models(provider_model_id, is_active, provider:llm_providers(name, base_url, api_key_env)))")
+    .select("id, name, description, steps:prompt_chain_steps(id, step_order, description, system_prompt, user_prompt, temperature, output_type, input_image, model:llm_models(provider_model_id, is_active, provider:llm_providers(name, base_url, api_key_env)))")
     .eq("name", tone).eq("is_active", true).maybeSingle();
   if (!data) return null;
   const one = <T,>(value: T | T[]) => (Array.isArray(value) ? value[0] : value);
@@ -67,7 +67,7 @@ export async function runCaptionChain(ctx: Context): Promise<ChainResult> {
         const provider = step.model.provider;
         const started = Date.now();
         try {
-          const call = { baseUrl: provider.base_url, apiKey: process.env[provider.api_key_env], model: step.model.provider_model_id, system, user, temperature: step.temperature };
+          const call = { baseUrl: provider.base_url, apiKey: process.env[provider.api_key_env], model: step.model.provider_model_id, system, user, temperature: step.temperature, image: step.input_image ? ctx.image : undefined };
           const output = step.output_type === "caption" ? parseCaption(await callChatJson(call)) : await callChatText(call);
           await log(ctx, { chain_id: chain.id, step_id: step.id, step_order: step.step_order, model: `${provider.name}/${step.model.provider_model_id}`, temperature: step.temperature, system_prompt: cut(system, 8000), user_prompt: cut(user, 12000), response: cut(output, 12000), status: "ok", duration_ms: Date.now() - started });
           previous = output;

@@ -33,7 +33,9 @@ export async function createCaption(_state: GenerationState, form: FormData): Pr
   const { data: requestId, error: limitError } = await supabase.rpc("reserve_caption_generation");
   if (limitError || !requestId) return { error: limitError?.message.includes("daily limit") ? "You’ve reached today’s 10-generation limit. Come back tomorrow." : "The studio couldn’t start your generation. Please try again." };
   let generated;
-  try { generated = await runCaptionChain({ supabase, userId: user.id, requestId, topic: input.topic, category: input.category, tone }); }
+  // Chain steps that read the photo get the upload (GIFs stay text-only; image models expect still images).
+  const image = attachment && attachment.extension !== "gif" ? `data:${attachment.type};base64,${Buffer.from(attachment.bytes).toString("base64")}` : undefined;
+  try { generated = await runCaptionChain({ supabase, userId: user.id, requestId, topic: input.topic, category: input.category, tone, image }); }
   catch (error) { return { error: error instanceof Error && error.message === "AI_BUSY" ? "The AI is busy. Try again in a moment." : "The AI couldn’t create a caption. Please try another moment. This attempt counts toward today’s limit." }; }
   let mediaPath: string | null = null;
   if (attachment) {
